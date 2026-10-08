@@ -6,5 +6,5 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 ai/traces/*.log
+ai/traces/*.jsonl
 !ai/traces/.gitkeep
-

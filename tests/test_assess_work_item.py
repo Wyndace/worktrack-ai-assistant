@@ -84,3 +84,33 @@ def test_non_object_payload_is_returned_as_safe_error() -> None:
 
     assert result["status"] == "error"
     assert result["code"] == "invalid_payload"
+
+
+def test_single_extra_closing_brace_from_provider_is_repaired() -> None:
+    payload = json.dumps(
+        {
+            "title": "Добавить комментарии",
+            "description": "Добавить проверяемый сценарий комментариев WorkTrack.",
+            "acceptance_criteria": [
+                "POST комментария возвращает 201",
+                "Пустой комментарий возвращает 400",
+            ],
+            "priority": "high",
+            "assignee": "backend",
+            "due_date": "2026-10-15",
+            "dependencies": [],
+        },
+        ensure_ascii=False,
+    )
+
+    result = json.loads(assess_work_item_payload(payload + "}"))
+
+    assert result["status"] == "ok"
+    assert result["ready"] is True
+
+
+def test_multiple_extra_closing_braces_are_not_repaired() -> None:
+    result = json.loads(assess_work_item_payload('{"title": "test"}}}'))
+
+    assert result["status"] == "error"
+    assert result["code"] == "invalid_json"

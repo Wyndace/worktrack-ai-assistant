@@ -46,6 +46,19 @@ def _non_empty_string(value: Any) -> bool:
     return isinstance(value, str) and bool(value.strip())
 
 
+def _parse_payload(work_item_json: str) -> Any:
+    try:
+        return json.loads(work_item_json)
+    except json.JSONDecodeError as error:
+        if error.msg != "Extra data":
+            raise
+
+        trailing = work_item_json[error.pos :].strip()
+        if trailing not in {"}", "]"}:
+            raise
+        return json.loads(work_item_json[: error.pos])
+
+
 def _add_finding(
     findings: list[dict[str, str]],
     *,
@@ -60,7 +73,7 @@ def assess_work_item_payload(work_item_json: str) -> str:
     """Assess one serialized WorkTrack work item and always return JSON."""
 
     try:
-        payload = json.loads(work_item_json)
+        payload = _parse_payload(work_item_json)
     except (json.JSONDecodeError, TypeError):
         return _json_result(
             {
