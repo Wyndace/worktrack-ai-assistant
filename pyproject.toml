@@ -1,0 +1,30 @@
+[project]
+name = "worktrack-ai-assistant"
+version = "0.1.0"
+description = "CrewAI assistant for checking WorkTrack task readiness"
+readme = "README.md"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "crewai==1.15.22",
+    "langchain-gigachat>=0.4.0",
+    "pydantic-settings==2.15.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.2",
+    "ruff>=0.13.2",
+]
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-config --strict-markers"
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "SIM", "RUF"]
+ignore = ["RUF001", "RUF002", "RUF003"]
