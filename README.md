@@ -35,7 +35,7 @@ uv sync --all-groups
 uv run python -m ai.run_agent
 ```
 
-HTTP API локально запускается так:
+HTTP API реализован на Litestar и запускается через ASGI-сервер Granian:
 
 ```bash
 APP_HOST=0.0.0.0 APP_PORT=8000 uv run python -m ai.server
@@ -43,6 +43,7 @@ APP_HOST=0.0.0.0 APP_PORT=8000 uv run python -m ai.server
 
 - `GET /health` — состояние процесса, выбранный провайдер и модель;
 - `POST /assess` — запуск проверки, тело: `{"request": "текст постановки"}`.
+- `GET /schema/swagger` — интерактивная OpenAPI-документация Litestar.
 
 `0.0.0.0` открывает порт на всех сетевых интерфейсах. В текущей реализации у
 API нет аутентификации, поэтому такой режим предназначен только для доверенной

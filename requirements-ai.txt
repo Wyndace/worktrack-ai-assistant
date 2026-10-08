@@ -1,4 +1,5 @@
 crewai==1.15.22
+granian>=2.6.0
 langchain-gigachat>=0.4.0
+litestar>=2.18.0
 pydantic-settings==2.15.0
-
